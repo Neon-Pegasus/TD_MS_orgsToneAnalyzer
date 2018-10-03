@@ -6,7 +6,7 @@ const app = express();
 
 const sentiment = new NaturalLanguageUnderstandingV1({
   url: process.env.NATURAL_LANGUAGE_UNDERSTANDING_URL,
-  version: process.env.TONE_ANALYZER_VERSION_DATE,
+  version: process.env.NATURAL_LANGUAGE_UNDERSTANDING_VERSION_DATE,
   iam_apikey: process.env.NATURAL_LANGUAGE_UNDERSTANDING_IAM_APIKEY,
 });
 
@@ -17,7 +17,7 @@ app.use(express.static('/client'));
 
 
 app.get('/', (req, res) => {
-  res.render('/client');
+  res.send('you\'ve reached the sentiment analysis server...');
 });
 
 app.post('/', (req, res, next) => {
@@ -26,7 +26,7 @@ app.post('/', (req, res, next) => {
       console.log(error);
     }
       // TODO: save toneAnalysis to a database
-    console.log(sentimentAnalysis);
+    res.send(sentimentAnalysis);
   });
 });
 
