@@ -2,7 +2,7 @@
   "name": "td_ms_orgstoneanalyzer",
   "version": "1.0.0",
   "description": "tone analyzer microservice for ToneDev",
-  "main": "index.js",
+  "main": "sentimentAnalysis.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
