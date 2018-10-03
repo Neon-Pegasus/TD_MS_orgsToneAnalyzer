@@ -2,7 +2,7 @@
   "name": "td_ms_orgstoneanalyzer",
   "version": "1.0.0",
   "description": "tone analyzer microservice for ToneDev",
-  "main": "index.js",
+  "main": "sentimentAnalysis.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -10,6 +10,7 @@
   "author": "Neon-Pegasus",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "watson-developer-cloud": "^3.11.1"
