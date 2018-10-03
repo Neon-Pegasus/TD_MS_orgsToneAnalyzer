@@ -13,7 +13,6 @@ const sentiment = new NaturalLanguageUnderstandingV1({
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
-app.use(express.static('/client'));
 
 
 app.get('/', (req, res) => {
@@ -31,16 +30,3 @@ app.post('/', (req, res, next) => {
 });
 
 module.exports = app;
-
-
-
-
-
-
-
-
-// const text = 'There is not any official documentation dictating that right-to-left languages should add "rtl" attribute in addition to "lang" to the "html" tag, so it would be at-least helpful to let people know about this issue with this package.';
-// const toneParams = {
-//   tone_input: { text },
-//   content_type: 'application/json',
-// };
