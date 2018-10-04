@@ -1,6 +1,8 @@
 require('dotenv').load({ silent: true });
 const app = require('./sentiment_analyzer/sentimentAnalysis.js');
 
-app.listen(4000, () => {
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
   console.log('Server now listening on port 4000');
 });
