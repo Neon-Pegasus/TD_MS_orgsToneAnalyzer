@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 
 
 app.get('/', (req, res) => {
+  // TODO: send sentiment analysis data from db in response
   res.send('you\'ve reached the sentiment analysis server...');
 });
 
