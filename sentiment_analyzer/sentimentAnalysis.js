@@ -22,11 +22,12 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res, next) => {
   sentiment.analyze(req.body, (error, sentimentAnalysis) => {
+    console.log('BODY', req.body);
     if (error) {
       console.log(error);
     }
       // TODO: save toneAnalysis to a database
-    res.send(sentimentAnalysis);
+    res.json({query: req.body.query, sentimentAnalysis});
   });
 });
 
