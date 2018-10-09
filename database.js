@@ -18,3 +18,6 @@ sequelize
     score: { type: Sequelize.INTEGER },
     sentiment: { type: Sequelize.STRING }
   });
+
+  exports.Organizations = Organizations;
+  
