@@ -1,7 +1,7 @@
 const express =require('express');
 require('dotenv').config();
 const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
-
+const { Organizations } = require('./../database');
 const app = express();
 
 const sentiment = new NaturalLanguageUnderstandingV1({
@@ -22,11 +22,17 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res, next) => {
   sentiment.analyze(req.body, (error, sentimentAnalysis) => {
+    console.log('BODY', req.body);
     if (error) {
       console.log(error);
     }
       // TODO: save toneAnalysis to a database
-    res.send(sentimentAnalysis);
+        Organizations.create({ orgName: 'Some Org Name',
+        orgRepoName: 'Some Repo Name',
+        score: 0.000000,
+        sentiment: 'sentiment'
+      });
+    res.json({query: req.body.query, sentimentAnalysis});
   });
 });
 
