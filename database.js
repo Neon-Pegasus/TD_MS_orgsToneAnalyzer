@@ -14,14 +14,10 @@ sequelize
     orgId: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     orgName: { type: Sequelize.STRING, unique: { args: true, message: 'Organization name must be unique.'}},
     orgRepoName: { type: Sequelize.STRING },
-    keywordRelevance: { type: Sequelize.ARRAY(Sequelize.ENUM('value')) },
     score: { type: Sequelize.INTEGER },
     sentiment: { type: Sequelize.STRING }
   });
 
-  sequelize.sync({ force: true })
-  .then(() => {
-    console.log(`Database & tables created!`)
-  });
+  sequelize.sync({force: true});
 
-  exports.Organizations = Organizations;
+  module.exports.Organizations = Organizations;
