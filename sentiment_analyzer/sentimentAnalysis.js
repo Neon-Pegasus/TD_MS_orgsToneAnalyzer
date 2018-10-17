@@ -10,6 +10,33 @@ const sentiment = new NaturalLanguageUnderstandingV1({
   iam_apikey: process.env.NATURAL_LANGUAGE_UNDERSTANDING_IAM_APIKEY,
 });
 
+const sentAnalyzer = (comment) => {
+  return new Promise((resolve, reject) => {
+    sentiment.analyze({
+        text: comment,
+        features: {
+          sentiment: {},
+          keywords: {}
+        }
+      }, (error, analysis) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(analysis.sentiment.document.score);
+      });
+    });
+}
+
+const analyzeGithubComments = (array) => {
+  const comments = array.slice(0);
+  const promises = [];
+  for (let i = 0; i < comments.length; i += 1) {
+    const comment = comments[i];
+    promises.push(sentAnalyzer(comment));
+  }
+  return Promise.all(promises);
+}
+
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
@@ -21,19 +48,56 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res, next) => {
-  sentiment.analyze(req.body, (error, sentimentAnalysis) => {
-    console.log('BODY', req.body);
-    if (error) {
+  const { text } = req.body;
+
+  analyzeGithubComments(text)
+    .then((results) => {
+      const analysis = {};
+      console.log(results);
+      const score = results.reduce((acc, val) => {
+        return acc + val;
+      }, 0);
+      analysis.score = score;
+      console.log(score);
+      if (Math.sign(score) === -1) {
+        analysis.sentiment = 'negative';
+      }
+      if (Math.sign(score) === 1 && score > 0) {
+        analysis.sentiment = 'positive';
+      }
+      console.log(analysis);
+      res.send(analysis);
+      })
+    .catch((error) => {
       console.log(error);
-    }
-      // TODO: save toneAnalysis to a database
-        Organizations.create({ orgName: 'Some Org Name',
-        orgRepoName: 'Some Repo Name',
-        score: 0.000000,
-        sentiment: 'sentiment'
-      });
-    res.json({query: req.body.query, sentimentAnalysis});
-  });
+    })
 });
 
 module.exports = app;
+
+
+        // TODO: save toneAnalysis to a database
+        //   Organizations.create({ orgName: 'Some Org Name',
+        //   orgRepoName: 'Some Repo Name',
+        //   score: 0.000000,
+        //   sentiment: 'sentiment'
+        // });
+
+
+        // console.log(comment);
+        // // CONSTRUCT PARAM FROM COMMENT
+        // const params = {
+        //   text: comment,
+        //   features: {
+        //     sentiment: {},
+        //     keywords: {}
+        //   }
+        // };
+    
+        // // RUN SENTIMENT ANALYSIS ON COMMENT
+        // sentiment.analyze(params, (error, sentimentAnalysis) => {
+        //   if (error) {
+        //     console.log(error);
+        //   }
+        //   console.log(sentimentAnalysis);
+        // });
