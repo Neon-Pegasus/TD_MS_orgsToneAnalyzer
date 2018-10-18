@@ -70,8 +70,24 @@ app.post('/', (req, res, next) => {
       })
     .catch((error) => {
       console.log(error);
+      res.send(error.message);
     })
 });
+
+app.post('/user/input', (req, res) => {
+    sentiment.analyze({
+        text: req.body.text,
+        features: {
+          sentiment: {},
+          keywords: {}
+        }
+      }, (error, analysis) => {
+        if (error) {
+          res.send(error);
+        }
+        res.send(analysis);
+      });
+})
 
 module.exports = app;
 
